@@ -1,3 +1,4 @@
+CREATE DATABASE `kraken` /*!40100 DEFAULT CHARACTER SET latin1 */;
 CREATE TABLE `crypto_timeseries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `currency_pair` tinyint(4) DEFAULT NULL,
