@@ -10,11 +10,13 @@ How to get **KCollector** up and running on your system.
 
 **3)** Clone or download the **KCollector** Source.
 
-**4)** Locate **KrakenScraper.java** under `src/com/kraken` Open it in any generic text editing software.
+**4)** Locate `crypto_timeseries.txt` under `/resources` Use it to create a new MySql table to store your data.
 
-**5)** Replace the line `credScan = new Scanner(new File("C:/temp/kraken_keys.txt"));` with the relevant path to your keys
+**5)** Locate **KrakenScraper.java** under `src/com/kraken` Open it in any generic text editing software.
 
-**5)** Exectute a `mvn clean install` to generate the executable jar under `/target`
+**6)** Replace the line `credScan = new Scanner(new File("C:/temp/kraken_keys.txt"));` with the relevant path to your keys.
 
-**6)** Invoke via command line `java -jar /path/to/KCollector0.0.1SNAPSHOT.jar`
+**7)** Exectute a `mvn clean install` to generate the executable jar under `/target`
+
+**8)** Invoke via command line `java -jar /path/to/KCollector0.0.1SNAPSHOT.jar`
 
