@@ -17,7 +17,7 @@ public class KrakenMain {
     private static final Logger LOGGER = Logger.getLogger(KrakenMain.class.getName());
 
     public static void main(String[] args) {
-	KrakenUtil.saveSchemaSql();
+	//KrakenUtil.saveSchemaSql();
 	if (args.length < 1) {
 	    LOGGER.log(Level.SEVERE, "Please provide the path to your kraken_keys.txt via argument");
 	    System.exit(0);

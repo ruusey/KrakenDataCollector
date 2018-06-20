@@ -1,0 +1,12 @@
+com\kraken\util\KeyLoader.class
+com\kraken\main\KrakenMain.class
+com\kraken\app\KrakenScraper.class
+com\kraken\constants\BaseCurrency.class
+com\kraken\util\TableManager.class
+com\kraken\dto\KrakenDTO.class
+com\kraken\app\KrakenAnalysis.class
+com\kraken\constants\CurrencyPair.class
+com\kraken\constants\OHLCIndex.class
+com\kraken\models\TradeTimeSeries.class
+com\kraken\util\KrakenUtil.class
+com\kraken\constants\CryptoCurrency.class

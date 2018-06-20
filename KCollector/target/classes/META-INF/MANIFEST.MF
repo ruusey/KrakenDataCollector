@@ -1,18 +1,5 @@
 Manifest-Version: 1.0
 Built-By: ruusey
-Class-Path: commons-io-2.6.jar commons-math3-3.6.1.jar log4j-core-2.11
- .0.jar log4j-api-2.11.0.jar mysql-connector-java-5.1.6.jar client-1.1
- .0.jar jackson-core-2.8.6.jar jackson-databind-2.8.6.jar jackson-anno
- tations-2.8.6.jar guava-18.0.jar jsr305-3.0.0.jar slf4j-api-1.7.23.ja
- r jersey-client-2.25.jar javax.ws.rs-api-2.0.1.jar jersey-common-2.25
- .jar javax.annotation-api-1.2.jar jersey-guava-2.25.jar osgi-resource
- -locator-1.0.1.jar hk2-api-2.5.0-b30.jar hk2-utils-2.5.0-b30.jar aopa
- lliance-repackaged-2.5.0-b30.jar javax.inject-2.5.0-b30.jar hk2-locat
- or-2.5.0-b30.jar javassist-3.20.0-GA.jar jersey-media-multipart-2.25.
- jar mimepull-1.9.6.jar jackson-jaxrs-json-provider-2.8.6.jar jackson-
- jaxrs-base-2.8.6.jar jackson-module-jaxb-annotations-2.8.6.jar gson-2
- .8.5.jar json-20160810.jar
 Build-Jdk: 1.8.0_144
 Created-By: Maven Integration for Eclipse
-Main-Class: com.kraken.main.KrakenMain
 
