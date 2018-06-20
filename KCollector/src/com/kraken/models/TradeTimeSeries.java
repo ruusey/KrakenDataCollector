@@ -1,4 +1,4 @@
-package com.kraken;
+package com.kraken.models;
 
 import java.sql.Date;
 

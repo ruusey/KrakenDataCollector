@@ -1,4 +1,4 @@
-package com.kraken;
+package com.kraken.constants;
 
 import java.util.HashMap;
 import java.util.Map;
