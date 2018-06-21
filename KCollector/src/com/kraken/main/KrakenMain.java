@@ -24,7 +24,7 @@ public class KrakenMain {
 	}
 	HashMap<String, String> apiKeys = KeyLoader.loadApiKeys(args[0]);
 	KrakenScraper collector = new KrakenScraper(apiKeys.get("api_key"), apiKeys.get("api_secret"));
-
+	
 	LOGGER.log(Level.INFO, "Succesfully initialized Kraken API");
 	LOGGER.log(Level.INFO, "Checking for kraken.crypto_timeseries database at localhost:3306...");
 
@@ -34,6 +34,7 @@ public class KrakenMain {
 	    LOGGER.log(Level.WARNING, "Unable to locate crypto_timeseries DB... Auto generating schema and table...");
 	    KrakenDTO.createKrakenSchema();
 	}
+	collector.fullPriceFetch();
 	Scanner s = new Scanner(System.in);
 	while (true) {
 	    printMenu();

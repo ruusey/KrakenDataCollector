@@ -43,8 +43,8 @@ public class KrakenDTO {
 	    Class.forName("com.mysql.jdbc.Driver").newInstance();
 	    conn = DriverManager.getConnection(url, USER, PASS);
 	    for (TradeTimeSeries entry : data) {
-		String sql = "INSERT INTO crypto_timeseries (currency_pair, base_currency, quote_currency,timestamp,open,high,low,close,vwap,count)"
-			+ "values (?, ? ,? ,? ,? ,?,?,?,?,?)";
+		String sql = "INSERT INTO crypto_timeseries (currency_pair, base_currency, quote_currency,timestamp,open,high,low,close,vwap,volume,count)"
+			+ "values (?, ? ,? ,? ,? ,?,?,?,?,?,?)";
 		int idx = 1;
 		PreparedStatement preparedStmt = conn.prepareStatement(sql);
 		preparedStmt.setInt(idx++, pair.type);
@@ -56,10 +56,11 @@ public class KrakenDTO {
 		preparedStmt.setDouble(idx++, entry.getLow());
 		preparedStmt.setDouble(idx++, entry.getClose());
 		preparedStmt.setDouble(idx++, entry.getVwap());
+		preparedStmt.setDouble(idx++, KrakenUtil.round(entry.getVolume(),2));
 		preparedStmt.setInt(idx++, entry.getCount());
 
 		preparedStmt.execute();
-		conn.close();
+		
 	    }
 
 	} catch (Exception e2) {

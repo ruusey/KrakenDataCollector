@@ -225,7 +225,7 @@ public class KrakenScraper {
 	    JSONArray data = res.getJSONArray(pair.name());
 	    for (int i = 0; i < data.length(); i++) {
 		JSONArray test = data.getJSONArray(i);
-
+		
 		TradeTimeSeries tts = parseTimeSeries(test);
 		timeSeriesData.add(tts);
 

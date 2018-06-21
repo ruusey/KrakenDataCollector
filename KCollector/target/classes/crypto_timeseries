@@ -1,0 +1,17 @@
+CREATE DATABASE `kraken` /*!40100 DEFAULT CHARACTER SET latin1 */
+CREATE TABLE `crypto_timeseries` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `currency_pair` tinyint(4) DEFAULT NULL,
+  `base_currency` tinyint(4) DEFAULT NULL,
+  `quote_currency` tinyint(4) DEFAULT NULL,
+  `timestamp` date DEFAULT NULL,
+  `open` double DEFAULT NULL,
+  `high` double DEFAULT NULL,
+  `low` double DEFAULT NULL,
+  `close` double DEFAULT NULL,
+  `vwap` double DEFAULT NULL,
+  `volume` double DEFAULT NULL,
+  `count` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1

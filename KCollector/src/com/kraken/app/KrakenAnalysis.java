@@ -6,10 +6,14 @@ import java.util.logging.Logger;
 
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 
+import com.github.signaflo.timeseries.TimePeriod;
+import com.github.signaflo.timeseries.TimeSeries;
 import com.kraken.constants.CurrencyPair;
 import com.kraken.dto.KrakenDTO;
 import com.kraken.models.TradeTimeSeries;
-
+import com.github.signaflo.*;
+import com.github.signaflo.data.DoubleDataSet;
+import com.github.signaflo.data.visualization.Plots;
 public class KrakenAnalysis {
 
     private static final Logger LOGGER = Logger.getLogger(KrakenAnalysis.class.getName());
@@ -19,6 +23,7 @@ public class KrakenAnalysis {
     }
 
     public static void main(String[] args) {
+	plotTimeSeries(CurrencyPair.BCHUSD);
 	for (CurrencyPair pair : CurrencyPair.values()) {
 	    LOGGER.log(Level.INFO, "Performing analysis on [" + pair.name() + "]");
 	    List<TradeTimeSeries> data = KrakenDTO.getTimeSeriesData(pair);
@@ -63,6 +68,18 @@ public class KrakenAnalysis {
 	StandardDeviation sd = new StandardDeviation(false);
 	double sdev = sd.evaluate(avgs);
 	LOGGER.log(Level.INFO, "Standard Deviation for [" + pair.name() + "] is " + sdev);
+    }
+    public static void plotTimeSeries(CurrencyPair pair) {
+	List<TradeTimeSeries> data = KrakenDTO.getTimeSeriesData(pair);
+	double[] avgs = new double[data.size()];
+	int idx = 0;
+	for (TradeTimeSeries tts : data) {
+	    double vwap = tts.getVwap();
+	    avgs[idx++] = vwap;
+	}
+	
+	TimeSeries ts = TimeSeries.from(TimePeriod.oneDay(),avgs);
+	Plots.plot(ts,"["+pair.name()+"] Daily VWAP Plot");
     }
 
 }
