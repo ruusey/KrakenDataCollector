@@ -36,6 +36,21 @@
             <version>1.0</version>
             <systemPath>${basedir}\lib\kraken-api-java-1.0.jar</systemPath>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.jfree/jfreechart -->
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <version>1.5.0</version>
+        </dependency>
+           <!-- https://mvnrepository.com/artifact/jfree/jcommon -->
+<!-- https://mvnrepository.com/artifact/org.jfree/jcommon -->
+<dependency>
+    <groupId>org.jfree</groupId>
+    <artifactId>jcommon</artifactId>
+    <version>1.0.24</version>
+</dependency>
+
+           
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
         <dependency>
             <groupId>commons-io</groupId>
@@ -81,11 +96,13 @@
         </dependency>
         <!-- MATH -->
         <!-- https://mvnrepository.com/artifact/eu.verdelhan/ta4j -->
-        <dependency>
-            <groupId>eu.verdelhan</groupId>
-            <artifactId>ta4j</artifactId>
-            <version>0.9</version>
-        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.ta4j/ta4j-core -->
+<dependency>
+    <groupId>org.ta4j</groupId>
+    <artifactId>ta4j-core</artifactId>
+    <version>0.11</version>
+</dependency>
+
 
         <!-- https://mvnrepository.com/artifact/com.github.signaflo/timeseries -->
         <dependency>

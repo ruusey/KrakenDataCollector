@@ -19,7 +19,7 @@ import org.apache.commons.io.FileUtils;
 import com.kraken.constants.BaseCurrency;
 import com.kraken.constants.CryptoCurrency;
 import com.kraken.constants.CurrencyPair;
-import com.kraken.models.TradeTimeSeries;
+import com.kraken.models.KrakenTimeSeries;
 import com.kraken.util.KeyLoader;
 import com.kraken.util.KrakenUtil;
 
@@ -28,7 +28,7 @@ public class KrakenDTO {
     private static final Logger LOGGER = Logger.getLogger(KrakenDTO.class.getName());
 
     public static void insertTimeseries(CurrencyPair pair, BaseCurrency base, CryptoCurrency crypto,
-	    List<TradeTimeSeries> data) {
+	    List<KrakenTimeSeries> data) {
 
 	try {
 	    Class.forName("com.mysql.jdbc.Driver");
@@ -42,7 +42,7 @@ public class KrakenDTO {
 	try {
 	    Class.forName("com.mysql.jdbc.Driver").newInstance();
 	    conn = DriverManager.getConnection(url, USER, PASS);
-	    for (TradeTimeSeries entry : data) {
+	    for (KrakenTimeSeries entry : data) {
 		String sql = "INSERT INTO crypto_timeseries (currency_pair, base_currency, quote_currency,timestamp,open,high,low,close,vwap,volume,count)"
 			+ "values (?, ? ,? ,? ,? ,?,?,?,?,?,?)";
 		int idx = 1;
@@ -78,8 +78,8 @@ public class KrakenDTO {
 
     }
 
-    public static List<TradeTimeSeries> getTimeSeriesData(CurrencyPair pair) {
-	ArrayList<TradeTimeSeries> series = new ArrayList<TradeTimeSeries>();
+    public static List<KrakenTimeSeries> getTimeSeriesData(CurrencyPair pair) {
+	ArrayList<KrakenTimeSeries> series = new ArrayList<KrakenTimeSeries>();
 	try {
 	    Class.forName("com.mysql.jdbc.Driver");
 	} catch (ClassNotFoundException ex) {
@@ -97,7 +97,7 @@ public class KrakenDTO {
 	    ResultSet rs = st.executeQuery(SQL);
 	    while (rs.next()) {
 		int columnId = 5;
-		TradeTimeSeries tts = new TradeTimeSeries();
+		KrakenTimeSeries tts = new KrakenTimeSeries();
 		tts.setTimestamp(rs.getDate(columnId++));
 		tts.setOpen(rs.getDouble(columnId++));
 		tts.setHigh(rs.getDouble(columnId++));

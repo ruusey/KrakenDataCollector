@@ -19,7 +19,7 @@ import com.kraken.constants.CryptoCurrency;
 import com.kraken.constants.CurrencyPair;
 import com.kraken.constants.OHLCIndex;
 import com.kraken.dto.KrakenDTO;
-import com.kraken.models.TradeTimeSeries;
+import com.kraken.models.KrakenTimeSeries;
 import com.kraken.util.KrakenUtil;
 
 import edu.self.kraken.api.KrakenApi;
@@ -53,7 +53,7 @@ public class KrakenScraper {
     }
     public void fullPriceFetch() {
 	for (CurrencyPair pair : CurrencyPair.values()) {
-	    ArrayList<TradeTimeSeries> timeSeriesData = new ArrayList<TradeTimeSeries>();
+	    ArrayList<KrakenTimeSeries> timeSeriesData = new ArrayList<KrakenTimeSeries>();
 	    LOGGER.log(Level.INFO, "Fetching daily price data for currency pair [" + pair.name() + "]");
 	    Map<String, String> input = new HashMap<String, String>();
 	    String response = null;
@@ -97,7 +97,7 @@ public class KrakenScraper {
 	    for (int i = 0; i < data.length(); i++) {
 		JSONArray test = data.getJSONArray(i);
 
-		TradeTimeSeries tts = parseTimeSeries(test);
+		KrakenTimeSeries tts = parseTimeSeries(test);
 		timeSeriesData.add(tts);
 
 	    }
@@ -112,7 +112,7 @@ public class KrakenScraper {
 	}
     }
     public void priceFetch(CurrencyPair pair) {
-	ArrayList<TradeTimeSeries> timeSeriesData = new ArrayList<TradeTimeSeries>();
+	ArrayList<KrakenTimeSeries> timeSeriesData = new ArrayList<KrakenTimeSeries>();
 	    LOGGER.log(Level.INFO, "Fetching daily price data for currency pair [" + pair.name() + "]");
 	    Map<String, String> input = new HashMap<String, String>();
 	    String response = null;
@@ -156,7 +156,7 @@ public class KrakenScraper {
 	    for (int i = 0; i < data.length(); i++) {
 		JSONArray test = data.getJSONArray(i);
 
-		TradeTimeSeries tts = parseTimeSeries(test);
+		KrakenTimeSeries tts = parseTimeSeries(test);
 		timeSeriesData.add(tts);
 
 	    }
@@ -182,7 +182,7 @@ public class KrakenScraper {
 	api.setKey(credScan.nextLine());
 	api.setSecret(credScan.nextLine());
 	for (CurrencyPair pair : CurrencyPair.values()) {
-	    ArrayList<TradeTimeSeries> timeSeriesData = new ArrayList<TradeTimeSeries>();
+	    ArrayList<KrakenTimeSeries> timeSeriesData = new ArrayList<KrakenTimeSeries>();
 	    LOGGER.log(Level.INFO, "Fetching daily price data for currency pair [" + pair.name() + "]");
 	    Map<String, String> input = new HashMap<String, String>();
 	    String response = null;
@@ -226,7 +226,7 @@ public class KrakenScraper {
 	    for (int i = 0; i < data.length(); i++) {
 		JSONArray test = data.getJSONArray(i);
 		
-		TradeTimeSeries tts = parseTimeSeries(test);
+		KrakenTimeSeries tts = parseTimeSeries(test);
 		timeSeriesData.add(tts);
 
 	    }
@@ -243,8 +243,8 @@ public class KrakenScraper {
 	// FIXME
     }
 
-    public static TradeTimeSeries parseTimeSeries(JSONArray tradeData) {
-	return new TradeTimeSeries(KrakenUtil.fromEpoch(tradeData.getLong(OHLCIndex.TIMESTAMP.id),true),
+    public static KrakenTimeSeries parseTimeSeries(JSONArray tradeData) {
+	return new KrakenTimeSeries(KrakenUtil.fromEpoch(tradeData.getLong(OHLCIndex.TIMESTAMP.id),true),
 		tradeData.getDouble(OHLCIndex.OPEN.id), tradeData.getDouble(OHLCIndex.HIGH.id),
 		tradeData.getDouble(OHLCIndex.LOW.id), tradeData.getDouble(OHLCIndex.CLOSE.id),
 		tradeData.getDouble(OHLCIndex.VWAP.id), tradeData.getDouble(OHLCIndex.VOLUME.id),

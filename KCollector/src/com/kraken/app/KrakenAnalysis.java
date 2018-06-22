@@ -10,7 +10,7 @@ import com.github.signaflo.timeseries.TimePeriod;
 import com.github.signaflo.timeseries.TimeSeries;
 import com.kraken.constants.CurrencyPair;
 import com.kraken.dto.KrakenDTO;
-import com.kraken.models.TradeTimeSeries;
+import com.kraken.models.KrakenTimeSeries;
 import com.github.signaflo.*;
 import com.github.signaflo.data.DoubleDataSet;
 import com.github.signaflo.data.visualization.Plots;
@@ -26,10 +26,10 @@ public class KrakenAnalysis {
 	plotTimeSeries(CurrencyPair.BCHUSD);
 	for (CurrencyPair pair : CurrencyPair.values()) {
 	    LOGGER.log(Level.INFO, "Performing analysis on [" + pair.name() + "]");
-	    List<TradeTimeSeries> data = KrakenDTO.getTimeSeriesData(pair);
+	    List<KrakenTimeSeries> data = KrakenDTO.getTimeSeriesData(pair);
 	    double[] avgs = new double[data.size()];
 	    int idx = 0;
-	    for (TradeTimeSeries tts : data) {
+	    for (KrakenTimeSeries tts : data) {
 		double vwap = tts.getVwap();
 		avgs[idx++] = vwap;
 	    }
@@ -42,10 +42,10 @@ public class KrakenAnalysis {
     public void fullTimeSeriesAnalysis() {
 	for (CurrencyPair pair : CurrencyPair.values()) {
 	    LOGGER.log(Level.INFO, "Performing analysis on [" + pair.name() + "]");
-	    List<TradeTimeSeries> data = KrakenDTO.getTimeSeriesData(pair);
+	    List<KrakenTimeSeries> data = KrakenDTO.getTimeSeriesData(pair);
 	    double[] avgs = new double[data.size()];
 	    int idx = 0;
-	    for (TradeTimeSeries tts : data) {
+	    for (KrakenTimeSeries tts : data) {
 		double vwap = tts.getVwap();
 		avgs[idx++] = vwap;
 	    }
@@ -58,10 +58,10 @@ public class KrakenAnalysis {
     public void timeSeriesAnalysis(CurrencyPair pair) {
 
 	LOGGER.log(Level.INFO, "Performing analysis on [" + pair.name() + "]");
-	List<TradeTimeSeries> data = KrakenDTO.getTimeSeriesData(pair);
+	List<KrakenTimeSeries> data = KrakenDTO.getTimeSeriesData(pair);
 	double[] avgs = new double[data.size()];
 	int idx = 0;
-	for (TradeTimeSeries tts : data) {
+	for (KrakenTimeSeries tts : data) {
 	    double vwap = tts.getVwap();
 	    avgs[idx++] = vwap;
 	}
@@ -70,10 +70,10 @@ public class KrakenAnalysis {
 	LOGGER.log(Level.INFO, "Standard Deviation for [" + pair.name() + "] is " + sdev);
     }
     public static void plotTimeSeries(CurrencyPair pair) {
-	List<TradeTimeSeries> data = KrakenDTO.getTimeSeriesData(pair);
+	List<KrakenTimeSeries> data = KrakenDTO.getTimeSeriesData(pair);
 	double[] avgs = new double[data.size()];
 	int idx = 0;
-	for (TradeTimeSeries tts : data) {
+	for (KrakenTimeSeries tts : data) {
 	    double vwap = tts.getVwap();
 	    avgs[idx++] = vwap;
 	}

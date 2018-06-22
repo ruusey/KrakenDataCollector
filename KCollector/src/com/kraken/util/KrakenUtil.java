@@ -11,16 +11,33 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.DateAxis;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.ui.ApplicationFrame;
+import org.jfree.data.time.Day;
+import org.jfree.data.time.TimeSeriesCollection;
+import org.jfree.ui.RefineryUtilities;
+import org.ta4j.core.Bar;
+import org.ta4j.core.BaseBar;
+import org.ta4j.core.BaseTimeSeries;
+import org.ta4j.core.Decimal;
+import org.ta4j.core.Indicator;
+import org.ta4j.core.TimeSeries;
+import org.ta4j.core.indicators.EMAIndicator;
+import org.ta4j.core.indicators.bollinger.BollingerBandsLowerIndicator;
+import org.ta4j.core.indicators.bollinger.BollingerBandsMiddleIndicator;
+import org.ta4j.core.indicators.bollinger.BollingerBandsUpperIndicator;
+import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
+import org.ta4j.core.indicators.statistics.StandardDeviationIndicator;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.kraken.constants.CurrencyPair;
 import com.kraken.dto.KrakenDTO;
-import com.kraken.models.TradeTimeSeries;
-
-import eu.verdelhan.ta4j.BaseTick;
-import eu.verdelhan.ta4j.BaseTimeSeries;
-import eu.verdelhan.ta4j.Tick;
+import com.kraken.models.KrakenTimeSeries;
 
 import java.io.File;
 import java.io.IOException;
@@ -77,16 +94,92 @@ public class KrakenUtil {
 	int scale = (int) Math.pow(10, precision);
 	return (double) Math.round(value * scale) / scale;
     }
-    public static Tick toTick(TradeTimeSeries tts) {
+    public static Bar toTick(KrakenTimeSeries tts) {
 	DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	 ZonedDateTime date = LocalDate.parse(tts.getTimestamp().toString(), DATE_FORMAT).atStartOfDay(ZoneId.systemDefault());
-	 return new BaseTick(date,tts.getOpen(),tts.getHigh(),tts.getLow(),tts.getClose(),tts.getVolume());
+	 return new BaseBar(date,tts.getOpen(),tts.getHigh(),tts.getLow(),tts.getClose(),tts.getVolume());
     }
-    public static BaseTimeSeries toBTS(List<TradeTimeSeries> data, CurrencyPair pair) {
-	List<Tick> ticks = new ArrayList<Tick>();
-	for(TradeTimeSeries tts: data) {
+    public static BaseTimeSeries toBTS(List<KrakenTimeSeries> data, CurrencyPair pair) {
+	List<Bar> ticks = new ArrayList<Bar>();
+	for(KrakenTimeSeries tts: data) {
 	    ticks.add(toTick(tts));
 	}
 	return new BaseTimeSeries(pair.name(),ticks);
+    }
+    public static void buildChart(CurrencyPair pair) {
+	TimeSeries series = toBTS(KrakenDTO.getTimeSeriesData(pair),pair);
+	ClosePriceIndicator closePrice = new ClosePriceIndicator(series);
+        EMAIndicator avg14 = new EMAIndicator(closePrice, 14);
+        StandardDeviationIndicator sd14 = new StandardDeviationIndicator(closePrice, 14);
+
+        // Bollinger bands
+        BollingerBandsMiddleIndicator middleBBand = new BollingerBandsMiddleIndicator(avg14);
+        BollingerBandsLowerIndicator lowBBand = new BollingerBandsLowerIndicator(middleBBand, sd14);
+        BollingerBandsUpperIndicator upBBand = new BollingerBandsUpperIndicator(middleBBand, sd14);
+        
+        TimeSeriesCollection dataset = new TimeSeriesCollection();
+        dataset.addSeries(buildChartTimeSeries(series, closePrice, pair.name()));
+        dataset.addSeries(buildChartTimeSeries(series, lowBBand, "Low Bollinger Band"));
+        dataset.addSeries(buildChartTimeSeries(series, upBBand, "High Bollinger Band"));
+        
+        JFreeChart chart = ChartFactory.createTimeSeriesChart(
+                pair.name(), // title
+                "Date", // x-axis label
+                "Price Per Unit", // y-axis label
+                dataset, // data
+                true, // create legend?
+                true, // generate tooltips?
+                false // generate URLs?
+                );
+        XYPlot plot = (XYPlot) chart.getPlot();
+        DateAxis axis = (DateAxis) plot.getDomainAxis();
+        axis.setDateFormatOverride(new SimpleDateFormat("yyyy-MM-dd"));
+
+        /*
+          Displaying the chart
+         */
+        displayChart(chart,pair.name());
+    }
+    public static org.jfree.data.time.TimeSeries buildChartTimeSeries(TimeSeries barseries, Indicator<Decimal> indicator, String name) {
+        org.jfree.data.time.TimeSeries chartTimeSeries = new org.jfree.data.time.TimeSeries(name);
+        for (int i = 0; i < barseries.getBarCount(); i++) {
+            Bar bar = barseries.getBar(i);
+            chartTimeSeries.addOrUpdate(new Day(Date.from(bar.getEndTime().toInstant())), indicator.getValue(i).doubleValue());
+        }
+        return chartTimeSeries;
+    }
+    public static void displayChart(JFreeChart chart,String appTitle) {
+        // Chart panel
+        ChartPanel panel = new ChartPanel(chart);
+        panel.setFillZoomRectangle(true);
+        panel.setMouseWheelEnabled(true);
+        panel.setPreferredSize(new java.awt.Dimension(600, 350));
+        // Application frame
+        ApplicationFrame frame = new ApplicationFrame("Sample Analysis of ["+appTitle+"]");
+        frame.setContentPane(panel);
+        frame.pack();
+        RefineryUtilities.centerFrameOnScreen(frame);
+        frame.setVisible(true);
+    }
+    public static CurrencyPair[] searchCurrencyPairs(String query) {
+	if(query.length()==0) return CurrencyPair.values();
+	int count = 0;
+	List<CurrencyPair> results = new ArrayList<CurrencyPair>();
+	for(CurrencyPair pair : CurrencyPair.values()) {
+	    if(pair.name().toLowerCase().startsWith(query) || pair.name().startsWith(query.toUpperCase())){
+		count++;
+		results.add(pair);
+	    }
+	}
+	CurrencyPair[] ret = new CurrencyPair[count];
+	results.toArray(ret);
+	return ret;
+    }
+    public static boolean validCurrencyPairSearch(String query) {
+	if(searchCurrencyPairs(query).length==1) {
+	    return true;
+	}else {
+	    return false;
+	}
     }
 }
