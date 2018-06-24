@@ -25,7 +25,11 @@ import org.ta4j.core.BaseBar;
 import org.ta4j.core.BaseTimeSeries;
 import org.ta4j.core.Decimal;
 import org.ta4j.core.Indicator;
+import org.ta4j.core.Order;
 import org.ta4j.core.TimeSeries;
+import org.ta4j.core.Trade;
+import org.ta4j.core.TradingRecord;
+import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.EMAIndicator;
 import org.ta4j.core.indicators.bollinger.BollingerBandsLowerIndicator;
 import org.ta4j.core.indicators.bollinger.BollingerBandsMiddleIndicator;
@@ -35,6 +39,8 @@ import org.ta4j.core.indicators.statistics.StandardDeviationIndicator;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.kraken.constants.BaseCurrency;
+import com.kraken.constants.CryptoCurrency;
 import com.kraken.constants.CurrencyPair;
 import com.kraken.dto.KrakenDTO;
 import com.kraken.models.KrakenTimeSeries;
@@ -49,7 +55,7 @@ public class KrakenUtil {
     private static SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
     private static SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss");
     private static Gson gson = new GsonBuilder().create();
-
+    
     public static Date fromEpoch(long time, boolean isUnix) {
 	time = (isUnix) ? time * 1000L : time;
 	String formattedDate = null;
@@ -181,5 +187,29 @@ public class KrakenUtil {
 	}else {
 	    return false;
 	}
+    }
+    public static void printStratRecord(TradingRecord record, TimeSeries original,CurrencyPair pair) {
+	System.out.println("|----Strategy Indicator Data----");
+	BaseCurrency base = CurrencyMap.getPairBase(pair);
+	CryptoCurrency crypto = CurrencyMap.getPairCrypto(pair);
+	if(record.getTrades().size()==0) {
+	    Order order = record.getLastOrder();
+	    String entryDate = original.getBar(order.getIndex()).getSimpleDateName().substring(0, 10);
+	    System.out.println("|\t|Recommended Entry: "+order.getType()+"{"+crypto+"}"+"@"+order.getPrice()+"{"+base+"} ["+entryDate+"]");
+	    return;
+	}
+	
+	for(Trade trade: record.getTrades()) {
+	    Order entry = trade.getEntry();
+	    Order exit = trade.getExit();
+	    String entryDate = original.getBar(entry.getIndex()).getSimpleDateName().substring(0, 10);
+	    String exitDate = original.getBar(exit.getIndex()).getSimpleDateName().substring(0, 10);
+	    System.out.println("|\t|----Trade Entry----");
+	    System.out.println("|\t|Recommended Entry: "+entry.getType()+"{"+crypto+"}"+"@"+entry.getPrice()+"{"+base+"} ["+entryDate+"]");
+	    System.out.println("|\t|Recommended Exit: "+exit.getType()+"{"+crypto+"}"+"@"+exit.getPrice()+"{"+base+"} ["+exitDate+"]");
+	    //System.out.println("|\t|----Trade Entry----");
+	}
+	System.out.println("|\t|Total Expected Profit: " +new TotalProfitCriterion().calculate(original, record)+"{"+crypto+"}");
+	System.out.println("|----Strategy Indicator Data----");
     }
 }

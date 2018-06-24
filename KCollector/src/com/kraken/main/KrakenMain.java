@@ -45,7 +45,7 @@ public class KrakenMain {
 		switch (choice) {
 		case 1:
 		    collector.fullPriceFetch();
-
+		    break;
 		case 2:
 		    System.out.println("Enter one of the following CurrencyPairs to retrieve price data for");
 		    KrakenUtil.serialize(CurrencyPair.values());
@@ -54,7 +54,7 @@ public class KrakenMain {
 		    } catch (Exception e) {
 			LOGGER.log(Level.SEVERE, "Invalid currency pair specified (case sensitive)");
 		    }
-
+		    break;
 		case 3:
 		    System.out.println("Enter one of the following CurrencyPairs to retrieve existing price data for");
 		    KrakenUtil.serialize(CurrencyPair.values());
@@ -69,7 +69,7 @@ public class KrakenMain {
 			break;
 		    }
 		case 4:
-		    System.out.println("Enter a currency pair to plot\ntip: enter incomplete currency pair names\nto display matching results.\n (case-insensitive) ");
+		    System.out.println("Enter a currency pair to plot\ntip: enter incomplete currency pair names\nto display matching results.\n(case-insensitive) ");
 
 		    String line = "";
 
