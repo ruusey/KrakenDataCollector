@@ -68,5 +68,17 @@ public class R2I2Strategy {
 	KrakenUtil.printStratRecord(tradingRecord, series,pair);
 
     }
+    public static void executeStrategy(TimeSeries series, CurrencyPair pair) {
+
+	
+	Strategy strategy = buildStrategy(series);
+
+	// Running the strategy
+	TimeSeriesManager seriesManager = new TimeSeriesManager(series);
+	TradingRecord tradingRecord = seriesManager.run(strategy);
+	
+	KrakenUtil.printStratRecord(tradingRecord, series,pair);
+
+    }
 
 }

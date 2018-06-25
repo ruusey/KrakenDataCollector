@@ -36,7 +36,7 @@ public class KrakenMain {
 	    LOGGER.log(Level.WARNING, "Unable to locate crypto_timeseries DB... Auto generating schema and table...");
 	    KrakenDTO.createKrakenSchema();
 	}
-
+	
 	Scanner s = new Scanner(System.in);
 	while (true) {
 	    printMenu();

@@ -1,10 +1,11 @@
 package com.kraken.models;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class KrakenTimeSeries {
 
-    private Date timestamp;
+    private Timestamp timestamp;
     private double open;
     private double high;
     private double low;
@@ -13,7 +14,7 @@ public class KrakenTimeSeries {
     private double volume;
     private int count;
 
-    public KrakenTimeSeries(Date timestamp, double open, double high, double low, double close, double vwap,
+    public KrakenTimeSeries(Timestamp timestamp, double open, double high, double low, double close, double vwap,
 	    double volume, int count) {
 	super();
 	this.timestamp = timestamp;
@@ -30,11 +31,11 @@ public class KrakenTimeSeries {
 	// TODO Auto-generated constructor stub
     }
 
-    public Date getTimestamp() {
+    public Timestamp getTimestamp() {
 	return this.timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(Timestamp timestamp) {
 	this.timestamp = timestamp;
     }
 

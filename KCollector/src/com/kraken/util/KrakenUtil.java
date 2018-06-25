@@ -2,6 +2,7 @@ package com.kraken.util;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -49,11 +50,12 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class KrakenUtil {
     private static final Logger LOGGER = Logger.getLogger(KrakenUtil.class.getName());
     private static SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-    private static SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss");
+    private static SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static Gson gson = new GsonBuilder().create();
     
     public static Date fromEpoch(long time, boolean isUnix) {
@@ -67,6 +69,9 @@ public class KrakenUtil {
 
 	return java.sql.Date.valueOf(formattedDate);
 
+    }
+    public static Timestamp fromEpoch(long time) {
+	return new Timestamp(time*1000);
     }
 
     public static String stringFromEpoch(long time, boolean isUnix) {
@@ -101,8 +106,8 @@ public class KrakenUtil {
 	return (double) Math.round(value * scale) / scale;
     }
     public static Bar toTick(KrakenTimeSeries tts) {
-	DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	 ZonedDateTime date = LocalDate.parse(tts.getTimestamp().toString(), DATE_FORMAT).atStartOfDay(ZoneId.systemDefault());
+	DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+	 ZonedDateTime date = LocalDateTime.parse(tts.getTimestamp().toString(), DATE_FORMAT).atZone(ZoneId.systemDefault());
 	 return new BaseBar(date,tts.getOpen(),tts.getHigh(),tts.getLow(),tts.getClose(),tts.getVolume());
     }
     public static BaseTimeSeries toBTS(List<KrakenTimeSeries> data, CurrencyPair pair) {
@@ -192,9 +197,15 @@ public class KrakenUtil {
 	System.out.println("|----Strategy Indicator Data----");
 	BaseCurrency base = CurrencyMap.getPairBase(pair);
 	CryptoCurrency crypto = CurrencyMap.getPairCrypto(pair);
+	if(original== null) return;
 	if(record.getTrades().size()==0) {
-	    Order order = record.getLastOrder();
-	    String entryDate = original.getBar(order.getIndex()).getSimpleDateName().substring(0, 10);
+	    Order order = record.getLastEntry();
+	    if(order==null) {
+		return;
+	    }
+	    Bar bar = original.getBar(order.getIndex());
+	   
+	    String entryDate = original.getBar(order.getIndex()).getSimpleDateName();
 	    System.out.println("|\t|Recommended Entry: "+order.getType()+"{"+crypto+"}"+"@"+order.getPrice()+"{"+base+"} ["+entryDate+"]");
 	    return;
 	}
@@ -202,8 +213,8 @@ public class KrakenUtil {
 	for(Trade trade: record.getTrades()) {
 	    Order entry = trade.getEntry();
 	    Order exit = trade.getExit();
-	    String entryDate = original.getBar(entry.getIndex()).getSimpleDateName().substring(0, 10);
-	    String exitDate = original.getBar(exit.getIndex()).getSimpleDateName().substring(0, 10);
+	    String entryDate = original.getBar(entry.getIndex()).getSimpleDateName();
+	    String exitDate = original.getBar(exit.getIndex()).getSimpleDateName();
 	    System.out.println("|\t|----Trade Entry----");
 	    System.out.println("|\t|Recommended Entry: "+entry.getType()+"{"+crypto+"}"+"@"+entry.getPrice()+"{"+base+"} ["+entryDate+"]");
 	    System.out.println("|\t|Recommended Exit: "+exit.getType()+"{"+crypto+"}"+"@"+exit.getPrice()+"{"+base+"} ["+exitDate+"]");

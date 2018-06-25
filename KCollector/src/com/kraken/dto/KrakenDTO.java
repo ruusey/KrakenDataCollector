@@ -50,7 +50,7 @@ public class KrakenDTO {
 		preparedStmt.setInt(idx++, pair.type);
 		preparedStmt.setInt(idx++, base.type);
 		preparedStmt.setInt(idx++, crypto.type);
-		preparedStmt.setDate(idx++, entry.getTimestamp());
+		preparedStmt.setTimestamp(idx++, entry.getTimestamp());
 		preparedStmt.setDouble(idx++, entry.getOpen());
 		preparedStmt.setDouble(idx++, entry.getHigh());
 		preparedStmt.setDouble(idx++, entry.getLow());
@@ -98,7 +98,7 @@ public class KrakenDTO {
 	    while (rs.next()) {
 		int columnId = 5;
 		KrakenTimeSeries tts = new KrakenTimeSeries();
-		tts.setTimestamp(rs.getDate(columnId++));
+		tts.setTimestamp(rs.getTimestamp(columnId++));
 		tts.setOpen(rs.getDouble(columnId++));
 		tts.setHigh(rs.getDouble(columnId++));
 		tts.setLow(rs.getDouble(columnId++));

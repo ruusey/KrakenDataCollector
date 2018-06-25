@@ -22,7 +22,7 @@ public class CCICorrectionStrategy {
             throw new IllegalArgumentException("Series cannot be null");
         }
 
-        CCIIndicator longCci = new CCIIndicator(series, 200);
+        CCIIndicator longCci = new CCIIndicator(series, 100);
         CCIIndicator shortCci = new CCIIndicator(series, 5);
         Decimal plus100 = Decimal.HUNDRED;
         Decimal minus100 = Decimal.valueOf(-100);
