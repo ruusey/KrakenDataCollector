@@ -20,10 +20,12 @@ import com.kraken.dto.KrakenDTO;
 import com.kraken.util.KrakenUtil;
 
 public class R2I2Strategy {
-    private static final String STRAT_NAME="R2I2Strategy";
+    private static final String STRAT_NAME = "R2I2Strategy";
+
     public static void main(String[] args) {
 	executeStrategy(CurrencyPair.DASHUSD);
     }
+
     public static Strategy buildStrategy(TimeSeries series) {
 	if (series == null) {
 	    throw new IllegalArgumentException("Series cannot be null");
@@ -55,29 +57,23 @@ public class R2I2Strategy {
     }
 
     public static void executeStrategy(CurrencyPair pair) {
-
 	TimeSeries series = KrakenUtil.toBTS(KrakenDTO.getTimeSeriesData(pair), pair);
-
-	// Building the trading strategy
 	Strategy strategy = buildStrategy(series);
 
-	// Running the strategy
 	TimeSeriesManager seriesManager = new TimeSeriesManager(series);
 	TradingRecord tradingRecord = seriesManager.run(strategy);
-	
-	KrakenUtil.printStratRecord(tradingRecord, series,pair);
+
+	KrakenUtil.printStratRecord(tradingRecord, series, pair);
 
     }
-    public static void executeStrategy(TimeSeries series, CurrencyPair pair) {
 
-	
+    public static void executeStrategy(TimeSeries series, CurrencyPair pair) {
 	Strategy strategy = buildStrategy(series);
 
-	// Running the strategy
 	TimeSeriesManager seriesManager = new TimeSeriesManager(series);
 	TradingRecord tradingRecord = seriesManager.run(strategy);
-	
-	KrakenUtil.printStratRecord(tradingRecord, series,pair);
+
+	KrakenUtil.printStratRecord(tradingRecord, series, pair);
 
     }
 

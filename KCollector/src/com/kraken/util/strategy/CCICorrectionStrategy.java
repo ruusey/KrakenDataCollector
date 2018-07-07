@@ -38,11 +38,19 @@ public class CCICorrectionStrategy {
         return strategy;
     }
     public static void executeStrategy(CurrencyPair pair) {
-
         // Getting the time series
 	TimeSeries series = KrakenUtil.toBTS(KrakenDTO.getTimeSeriesData(pair), pair);
-
         // Building the trading strategy
+        Strategy strategy = buildStrategy(series);
+
+        // Running the strategy
+        TimeSeriesManager seriesManager = new TimeSeriesManager(series);
+        TradingRecord tradingRecord = seriesManager.run(strategy);
+        KrakenUtil.printStratRecord(tradingRecord, series, pair);
+    }
+    public static void executeStrategy(TimeSeries series, CurrencyPair pair) {
+        // Getting the time series
+	
         Strategy strategy = buildStrategy(series);
 
         // Running the strategy

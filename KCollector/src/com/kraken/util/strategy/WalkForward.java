@@ -143,9 +143,9 @@ public class WalkForward {
 	HashMap<String, String> apiKeys = KeyLoader.loadApiKeys("C:/temp/kraken_keys.txt");
 	KrakenScraper collector = new KrakenScraper(apiKeys.get("api_key"), apiKeys.get("api_secret"));
 
-	CurrencyPair toFetch = CurrencyPair.XXRPZUSD;
-	TimeSeries series = KrakenUtil.toBTS(collector.priceFetch(toFetch, OHLCTimePeriod.FIVE_MINUTES), toFetch);
-        List<TimeSeries> subseries = splitSeries(series, Duration.ofHours(1), Duration.ofDays(4));
+	CurrencyPair toFetch = CurrencyPair.XLTCZUSD;
+	TimeSeries series = KrakenUtil.toBTS(collector.priceFetch(toFetch, OHLCTimePeriod.FIFTEEN_MINUTES), toFetch);
+        List<TimeSeries> subseries = splitSeries(series, Duration.ofMinutes(60), Duration.ofHours(24));
 
         // Building the map of strategies
         Map<Strategy, String> strategies = buildStrategiesMap(series);

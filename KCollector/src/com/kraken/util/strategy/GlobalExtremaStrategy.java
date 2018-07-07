@@ -4,6 +4,7 @@ import org.ta4j.core.Strategy;
 import org.ta4j.core.TimeSeries;
 
 import com.kraken.constants.CurrencyPair;
+import com.kraken.constants.OHLCTimePeriod;
 import com.kraken.dto.KrakenDTO;
 import com.kraken.util.KrakenUtil;
 import org.ta4j.core.BaseStrategy;
@@ -51,6 +52,32 @@ public class GlobalExtremaStrategy {
 
         return new BaseStrategy(buyingRule, sellingRule);
     }
+    public static Strategy buildStrategy(TimeSeries series, OHLCTimePeriod timeFrame) {
+        if (series == null) {
+            throw new IllegalArgumentException("Series cannot be null");
+        }
+        double min = Double.parseDouble(timeFrame.id);
+        double bars = (60.0/min)*24.0*7.0;
+        int barsPerWeek = (int) bars;
+        ClosePriceIndicator closePrices = new ClosePriceIndicator(series);
+
+        // Getting the max price over the past week
+        MaxPriceIndicator maxPrices = new MaxPriceIndicator(series);
+        HighestValueIndicator weekMaxPrice = new HighestValueIndicator(maxPrices, barsPerWeek);
+        // Getting the min price over the past week
+        MinPriceIndicator minPrices = new MinPriceIndicator(series);
+        LowestValueIndicator weekMinPrice = new LowestValueIndicator(minPrices, barsPerWeek);
+
+        // Going long if the close price goes below the min price
+        MultiplierIndicator downWeek = new MultiplierIndicator(weekMinPrice, Decimal.valueOf("1.004"));
+        Rule buyingRule = new UnderIndicatorRule(closePrices, downWeek);
+
+        // Going short if the close price goes above the max price
+        MultiplierIndicator upWeek = new MultiplierIndicator(weekMaxPrice, Decimal.valueOf("0.996"));
+        Rule sellingRule = new OverIndicatorRule(closePrices, upWeek);
+
+        return new BaseStrategy(buyingRule, sellingRule);
+    }
 
     public static void executeStrategy(CurrencyPair pair) {
 
@@ -69,6 +96,16 @@ public class GlobalExtremaStrategy {
 
         // Building the trading strategy
         Strategy strategy = buildStrategy(series);
+
+        // Running the strategy
+        TimeSeriesManager seriesManager = new TimeSeriesManager(series);
+        TradingRecord tradingRecord = seriesManager.run(strategy);
+        KrakenUtil.printStratRecord(tradingRecord, series,pair);
+    }
+    public static void executeStrategy(TimeSeries series, CurrencyPair pair, OHLCTimePeriod timeFrame) {
+
+        // Building the trading strategy
+        Strategy strategy = buildStrategy(series,timeFrame);
 
         // Running the strategy
         TimeSeriesManager seriesManager = new TimeSeriesManager(series);
