@@ -22,7 +22,7 @@ public class CCICorrectionStrategy {
             throw new IllegalArgumentException("Series cannot be null");
         }
 
-        CCIIndicator longCci = new CCIIndicator(series, 100);
+        CCIIndicator longCci = new CCIIndicator(series, 200);
         CCIIndicator shortCci = new CCIIndicator(series, 5);
         Decimal plus100 = Decimal.HUNDRED;
         Decimal minus100 = Decimal.valueOf(-100);
@@ -57,6 +57,7 @@ public class CCICorrectionStrategy {
         TimeSeriesManager seriesManager = new TimeSeriesManager(series);
         TradingRecord tradingRecord = seriesManager.run(strategy);
         KrakenUtil.printStratRecord(tradingRecord, series, pair);
+        
     }
 
 }

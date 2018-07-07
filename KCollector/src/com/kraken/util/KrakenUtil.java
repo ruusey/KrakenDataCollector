@@ -235,7 +235,7 @@ public class KrakenUtil {
 	    return false;
 	}
     }
-
+    
     public static void printStratRecord(TradingRecord record, TimeSeries original, CurrencyPair pair) {
 	System.out.println("|----Strategy Indicator Data----");
 
@@ -281,5 +281,6 @@ public class KrakenUtil {
 	System.out.println("|\t|Total Expected Profit: " + new TotalProfitCriterion().calculate(original, record) + "{"
 		+ crypto + "}");
 	System.out.println("|----Strategy Indicator Data----");
+	//KrakenUtil.serializePretty(record);
     }
 }
