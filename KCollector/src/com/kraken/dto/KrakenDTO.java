@@ -37,7 +37,7 @@ public class KrakenDTO {
 	}
 	String url = "jdbc:mysql://localhost:3306/kraken";
 	String USER = "root";
-	String PASS = "";
+	String PASS = "admin";
 	Connection conn = null;
 	try {
 	    Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -87,7 +87,7 @@ public class KrakenDTO {
 	}
 	String url = "jdbc:mysql://localhost:3306/kraken";
 	String USER = "root";
-	String PASS = "";
+	String PASS = "admin";
 	Connection conn = null;
 	try {
 	    Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -134,7 +134,7 @@ public class KrakenDTO {
 	}
 	String url = "jdbc:mysql://localhost:3306";
 	String USER = "root";
-	String PASS = "";
+	String PASS = "admin";
 	Connection conn = null;
 	try {
 	    Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -174,7 +174,7 @@ public class KrakenDTO {
 	}
 	String url = "jdbc:mysql://localhost:3306";
 	String USER = "root";
-	String PASS = "";
+	String PASS = "admin";
 	Connection conn = null;
 	try {
 	    Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -217,7 +217,7 @@ public class KrakenDTO {
 	    }
 	    String url = "jdbc:mysql://localhost:3306";
 	    String USER = "root";
-	    String PASS = "";
+	    String PASS = "admin";
 	    Connection conn = null;
 	    try {
 		Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -252,7 +252,7 @@ public class KrakenDTO {
 	}
 	String url = "jdbc:mysql://localhost:3306";
 	String USER = "root";
-	String PASS = "";
+	String PASS = "admin";
 	Connection conn = null;
 	try {
 	    Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -296,7 +296,7 @@ public class KrakenDTO {
 	}
 	String url = "jdbc:mysql://localhost:3306";
 	String USER = "root";
-	String PASS = "";
+	String PASS = "admin";
 	Connection conn = null;
 	try {
 	    Class.forName("com.mysql.jdbc.Driver").newInstance();

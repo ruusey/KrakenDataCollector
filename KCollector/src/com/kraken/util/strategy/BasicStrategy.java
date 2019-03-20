@@ -64,7 +64,7 @@ public class BasicStrategy implements StrategyBuilder {
         this.minPrice = new MinPriceIndicator(this.series);
         this.closePrice = new ClosePriceIndicator(this.series);
         this.maxPrice = new MaxPriceIndicator(this.series);
-        setParams(14, Decimal.valueOf(0.01));
+        setParams(16, Decimal.valueOf(0.015));
     }
 
     

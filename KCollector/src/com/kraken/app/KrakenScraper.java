@@ -196,7 +196,6 @@ public class KrakenScraper {
 
    		}
    	    }
-   	    System.out.println(this.gson.toJson(response));
    	    JSONObject obj = new JSONObject(response);
    	    JSONObject res = obj.getJSONObject("result");
    	    JSONArray data = res.getJSONArray(pair.name());
@@ -210,6 +209,37 @@ public class KrakenScraper {
    	    LOGGER.log(Level.INFO, "Succesfully retrieved all price data for currency pair [" + pair.name() + "]("
    		    + timeSeriesData.size() + " records) in " + (System.currentTimeMillis() - startTime));
    	   return timeSeriesData;
+       }
+    public ArrayList<KrakenTimeSeries> tradesFetch(CurrencyPair pair) {
+   	ArrayList<KrakenTimeSeries> timeSeriesData = new ArrayList<KrakenTimeSeries>();
+   	    LOGGER.log(Level.INFO, "Fetching trade data for currency pair [" + pair.name() + "]");
+   	    Map<String, String> input = new HashMap<String, String>();
+   	    String response = null;
+   	    long last = 0;
+   	    input.put("pair", pair.name());
+   	   
+   	    long startTime = System.currentTimeMillis();
+   	    while (true) {
+   	
+   		//input.put("since", last+"");
+   		try {
+   		    LOGGER.log(Level.INFO, "Sending request to the Kraken API for currency pair [" + pair.name() + "]");
+   		    response = api.queryPublic(Method.TRADES, input);
+   		    JSONObject obj = new JSONObject(response);
+   		    JSONObject res = obj.getJSONObject("result");
+   		    //last = obj.getLong("last");
+   		    Thread.sleep(4000);
+   		} catch (Exception e) {
+   		    LOGGER.log(Level.SEVERE, "Error contacting the Kraken API\nCause: " + e.getMessage());
+   		    try {
+   			
+   		    }catch(Exception e1) {
+   			//Thread.sleep(4000);
+   		    }
+   		    continue;
+
+   		}
+   	    }
        }
     public ArrayList<KrakenTimeSeries> priceFetch(CurrencyPair pair,OHLCTimePeriod interval, long since) {
    	ArrayList<KrakenTimeSeries> timeSeriesData = new ArrayList<KrakenTimeSeries>();
@@ -229,11 +259,14 @@ public class KrakenScraper {
    		    break;
    		} catch (Exception e) {
    		    LOGGER.log(Level.SEVERE, "Error contacting the Kraken API\nCause: " + e.getMessage());
+   		    try {
+   			Thread.sleep(10000);
+   		    }catch(Exception e1) {};
    		    continue;
 
    		}
    	    }
-   	    System.out.println(this.gson.toJson(response));
+   	    //System.out.println(this.gson.toJson(response));
    	    JSONObject obj = new JSONObject(response);
    	    JSONObject res = obj.getJSONObject("result");
    	    JSONArray data = res.getJSONArray(pair.name());
@@ -260,7 +293,7 @@ public class KrakenScraper {
 		    LOGGER.log(Level.INFO, "Sending request to the Kraken API for currency pair [" + pair.name() + "]");
 		    response = api.queryPublic(Method.OHLC, input);
 		    JSONObject obj = new JSONObject(response);
-		    KrakenUtil.serializePretty(obj);
+		    //KrakenUtil.serializePretty(obj);
 		    JSONObject res = obj.getJSONObject("result");
 		    long last = (Long)res.get("last");
 		    return last;
@@ -275,7 +308,7 @@ public class KrakenScraper {
     public static void main(String[] args) {
 	Scanner credScan = null;
 	try {
-	    credScan = new Scanner(new File("C:/temp/kraken_keys.txt"));
+	    credScan = new Scanner(new File("D:/Temp/kraken_keys.txt"));
 	    LOGGER.log(Level.INFO, "Successfully loaded kraken API keys");
 	} catch (FileNotFoundException e1) {
 	    LOGGER.log(Level.SEVERE, "Error locating kraken API keys. Please check for the correct filepath.");
@@ -284,6 +317,7 @@ public class KrakenScraper {
 	KrakenApi api = new KrakenApi();
 	api.setKey(credScan.nextLine());
 	api.setSecret(credScan.nextLine());
+	getAssetPairs(api);
 	for (CurrencyPair pair : CurrencyPair.values()) {
 	    ArrayList<KrakenTimeSeries> timeSeriesData = new ArrayList<KrakenTimeSeries>();
 	    LOGGER.log(Level.INFO, "Fetching daily price data for currency pair [" + pair.name() + "]");

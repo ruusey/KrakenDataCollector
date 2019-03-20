@@ -74,6 +74,7 @@ public class R2I2Strategy {
 	TradingRecord tradingRecord = seriesManager.run(strategy);
 
 	KrakenUtil.printStratRecord(tradingRecord, series, pair);
+	KrakenUtil.serializePretty(tradingRecord);
 
     }
 

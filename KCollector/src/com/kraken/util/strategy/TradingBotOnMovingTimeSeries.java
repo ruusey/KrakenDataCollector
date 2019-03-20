@@ -33,7 +33,7 @@ public class TradingBotOnMovingTimeSeries {
 	KrakenScraper collector = new KrakenScraper(apiKeys.get("api_key"), apiKeys.get("api_secret"));
 
 	CurrencyPair toFetch = CurrencyPair.XLTCZUSD;
-	TimeSeries series = KrakenUtil.toBTS(collector.priceFetch(toFetch, OHLCTimePeriod.FIFTEEN_MINUTES), toFetch);
+	TimeSeries series = KrakenUtil.toBTS(collector.priceFetch(toFetch, OHLCTimePeriod.ONE_MINUTE), toFetch);
 	return series;
     }
     /**
@@ -110,6 +110,7 @@ public class TradingBotOnMovingTimeSeries {
         
         // Initializing the trading history
         TradingRecord tradingRecord = new BaseTradingRecord();
+        KrakenUtil.printStratRecord(tradingRecord, series,CurrencyPair.BCHUSD);
         System.out.println("************************************************************");
         
         /**

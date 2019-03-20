@@ -23,7 +23,7 @@ public class KrakenAnalysis {
     }
 
     public static void main(String[] args) {
-	plotTimeSeries(CurrencyPair.BCHUSD);
+	plotTimeSeries(CurrencyPair.XZECZJPY);
 	for (CurrencyPair pair : CurrencyPair.values()) {
 	    LOGGER.log(Level.INFO, "Performing analysis on [" + pair.name() + "]");
 	    List<KrakenTimeSeries> data = KrakenDTO.getTimeSeriesData(pair);
