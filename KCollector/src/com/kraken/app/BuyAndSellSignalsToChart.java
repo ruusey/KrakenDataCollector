@@ -102,13 +102,13 @@ public class BuyAndSellSignalsToChart {
 
     public static void main(String[] args) {
 
-	HashMap<String, String> apiKeys = KeyLoader.loadApiKeys("C:/temp/kraken_keys.txt");
+	HashMap<String, String> apiKeys = KeyLoader.loadApiKeys("D:/Temp/kraken_keys.txt");
 	KrakenScraper collector = new KrakenScraper(apiKeys.get("api_key"), apiKeys.get("api_secret"));
 	//collector.getLastTickIdentifier(CurrencyPair.XLTCZUSD, OHLCTimePeriod.FIFTEEN_MINUTES);
-	CurrencyPair toFetch = CurrencyPair.XXBTZUSD;
-	TimeSeries series = KrakenUtil.toBTS(collector.priceFetch(toFetch, OHLCTimePeriod.FIFTEEN_MINUTES), toFetch);
+	CurrencyPair toFetch = CurrencyPair.XETHZUSD;
+	TimeSeries series = KrakenUtil.toBTS(collector.priceFetch(toFetch, OHLCTimePeriod.ONE_HOUR), toFetch);
         // Building the trading strategy
-        Strategy strategy = MovingMomentumStrategy.buildStrategy(series);
+        Strategy strategy = GlobalExtremaStrategy.buildStrategy(series);
 
         /**
          * Building chart datasets

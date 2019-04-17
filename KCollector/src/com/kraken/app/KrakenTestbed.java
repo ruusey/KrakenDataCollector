@@ -31,7 +31,7 @@ public class KrakenTestbed {
 	//long tick = collector.getLastTickIdentifier(CurrencyPair.XLTCZUSD, OHLCTimePeriod.FIFTEEN_MINUTES);
 	
 	
-	CurrencyPair toFetch = CurrencyPair.EOSUSD;
+	CurrencyPair toFetch = CurrencyPair.EOSEUR;
 	//collector.tradesFetch(toFetch);
 	TimeSeries series = KrakenUtil.toBTS(collector.priceFetch(toFetch, OHLCTimePeriod.FIFTEEN_MINUTES), toFetch);
 	
