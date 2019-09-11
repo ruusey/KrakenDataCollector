@@ -25,19 +25,19 @@ public class KrakenTestbed {
     public static void main(String[] args) {
 	
 	
-	HashMap<String, String> apiKeys = KeyLoader.loadApiKeys("D:/Temp/kraken_keys.txt");
+	HashMap<String, String> apiKeys = KeyLoader.loadApiKeys("C:/temp/kraken_keys.txt");
 	KrakenScraper collector = new KrakenScraper(apiKeys.get("api_key"), apiKeys.get("api_secret"));
 	
 	//long tick = collector.getLastTickIdentifier(CurrencyPair.XLTCZUSD, OHLCTimePeriod.FIFTEEN_MINUTES);
 	
 	
-	CurrencyPair toFetch = CurrencyPair.EOSEUR;
+	CurrencyPair toFetch = CurrencyPair.XXBTZUSD;
 	//collector.tradesFetch(toFetch);
-	TimeSeries series = KrakenUtil.toBTS(collector.priceFetch(toFetch, OHLCTimePeriod.FIFTEEN_MINUTES), toFetch);
+	TimeSeries series = KrakenUtil.toBTS(collector.priceFetch(toFetch, OHLCTimePeriod.ONE_HOUR), toFetch);
 	
 	
-        GlobalExtremaStrategy.executeStrategy(series, toFetch);
-        //System.out.println("Go fuck yourself.");
+        R2I2Strategy.executeStrategy(series, toFetch);
+        
     }
 
 }

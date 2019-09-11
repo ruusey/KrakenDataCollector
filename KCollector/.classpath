@@ -12,7 +12,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/downloads/kraken-api-java-master/kraken-api-java-master/target/kraken-api.jar"/>
+	<classpathentry kind="lib" path="C:/dev/kraken-api-java-master/target/kraken-api-java.jar"/>
 	<classpathentry kind="src" path="target/generated-sources/annotations">
 		<attributes>
 			<attribute name="ignore_optional_problems" value="true"/>

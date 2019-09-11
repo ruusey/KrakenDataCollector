@@ -53,7 +53,7 @@ public class R2I2Strategy {
 
 	// TODO: Finalize the strategy
 
-	return new BaseStrategy(entryRule, exitRule);
+	return new BaseStrategy(exitRule, entryRule);
     }
 
     public static void executeStrategy(CurrencyPair pair) {
@@ -74,7 +74,7 @@ public class R2I2Strategy {
 	TradingRecord tradingRecord = seriesManager.run(strategy);
 
 	KrakenUtil.printStratRecord(tradingRecord, series, pair);
-	KrakenUtil.serializePretty(tradingRecord);
+	//KrakenUtil.serializePretty(tradingRecord);
 
     }
 
